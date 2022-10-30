@@ -150,9 +150,6 @@ class Hall(Star_cinema):
 sony_hall = Hall(5, 7, 1)
 sony_hall.entry_show("bat01", "Bat man", "Nov 05 2022 5:30PM")
 sony_hall.entry_show("super01", "super man", "Nov 06 2022 10:30PM")
-# sony_hall.book_seats(
-#     "jani na", "01*********", "bat01", [(0, 0), (2, 2), (3, 3), (1, 2)]
-# )
 
 
 while True:
