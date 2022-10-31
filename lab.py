@@ -6,10 +6,11 @@
 
 
 class Star_cinema:
-    hall_list = []
+    # private data store list
+    __hall_list = []
 
     def entry_hall(self, hall_obj):
-        self.hall_list.append(hall_obj)
+        self.__hall_list.append(hall_obj)
 
 
 def convert_seat_to_tuple(string):
@@ -27,24 +28,24 @@ def convert_tuple_to_seat(t):
 
 class Hall(Star_cinema):
     def __init__(self, rows, cols, hall_no) -> None:
-        self.seats = {}
-        self.show_list = []
+        self._seats = {}  # protected seats info
+        self._show_list = []  # protected show list
         self.rows = rows
         self.cols = cols
-        self.hall_no = hall_no
+        self.__hall_no = hall_no  # private hall no
         self.entry_hall(self)
 
     def entry_show(self, id, movie_name, time):
         show_info = (id, movie_name, time)
-        self.show_list.append(show_info)
+        self._show_list.append(show_info)
 
-        self.seats[id] = [[True for j in range(self.cols)] for i in range(self.rows)]
+        self._seats[id] = [[True for j in range(self.cols)] for i in range(self.rows)]
 
     def book_seats(self, customer_name, phone, id, seat_list):
         isValidId = 0
         movie_name = ""
         time = ""
-        for t in self.show_list:
+        for t in self._show_list:
             if t[0] == id:
                 isValidId = 1
                 movie_name = t[1]
@@ -74,8 +75,8 @@ class Hall(Star_cinema):
                     print("-" * 30)
                     print()
                     continue
-                if self.seats[id][t[0]][t[1]] == True:
-                    self.seats[id][t[0]][t[1]] = False
+                if self._seats[id][t[0]][t[1]] == True:
+                    self._seats[id][t[0]][t[1]] = False
                     successfully_booked.append(f"{convert_tuple_to_seat(t)}{t[1]}")
                 else:
                     print()
@@ -96,7 +97,7 @@ class Hall(Star_cinema):
             print("TICKET:", end=" ")
             [print(x, end=" ") for x in successfully_booked]
             print()
-            print("HALL:", self.hall_no)
+            print("HALL:", self.__hall_no)
             print()
             print("-" * 70)
             print("\n")
@@ -111,7 +112,7 @@ class Hall(Star_cinema):
         print("\n")
         print("-" * 75)
         print("\n")
-        for show in self.show_list:
+        for show in self._show_list:
             print(f"MOVIE NAME: {show[1]}\t SHOW ID: {show[0]} \t TIME: {show[2]}")
         print("\n")
         print("-" * 75)
@@ -120,7 +121,7 @@ class Hall(Star_cinema):
     def view_available_seats(self, show_id):
         isValidID = False
 
-        for show in self.show_list:
+        for show in self._show_list:
             if show[0] == show_id:
                 print("\n\n")
                 print(f"MOVIE NAME: {show[1]}\t TIME: {show[2]}")
@@ -136,7 +137,7 @@ class Hall(Star_cinema):
         print("X for already booked seats\n")
 
         print("-" * 50)
-        for i, r in enumerate(self.seats[show_id]):
+        for i, r in enumerate(self._seats[show_id]):
             for j, seat in enumerate(r):
                 if seat:
                     print(f"{chr(i+65)}{j}", end="\t")
@@ -147,7 +148,7 @@ class Hall(Star_cinema):
         print("\n")
 
 
-sony_hall = Hall(5, 7, 1)
+sony_hall = Hall(5, 7, "A01")
 sony_hall.entry_show("bat01", "Bat man", "Nov 05 2022 5:30PM")
 sony_hall.entry_show("super01", "super man", "Nov 06 2022 10:30PM")
 
